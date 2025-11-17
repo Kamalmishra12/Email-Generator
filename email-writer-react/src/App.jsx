@@ -14,6 +14,15 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 
+// ✅ Backend URL Fix — priority to VITE_API_URL
+const API_BASE = import.meta.env.VITE_API_URL || "https://email-generator2.onrender.com";
+
+const api = axios.create({
+  baseURL: API_BASE,
+  headers: { "Content-Type": "application/json" },
+  timeout: 30000,
+});
+
 export default function App() {
   const [emailContent, setEmailContent] = useState('')
   const [tone, setTone] = useState('')
@@ -29,7 +38,7 @@ export default function App() {
     setGeneratedReply('')
 
     try {
-      const response = await axios.post('https://email-generator2.onrender.com', {
+      const response = await api.post('/api/email/generate', {
         emailContent,
         tone,
       })
@@ -43,8 +52,17 @@ export default function App() {
         setGeneratedReply(JSON.stringify(data, null, 2))
       }
     } catch (err) {
-      console.error(err)
-      setError('⚠️ Failed to generate email reply. Please try again.')
+      console.error("API Error (full):", err)
+
+      // Show readable backend error
+      const apiMsg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.response?.data ||
+        err?.message ||
+        JSON.stringify(err)
+
+      setError(`⚠️ ${apiMsg}`)
     } finally {
       setLoading(false)
     }
@@ -56,7 +74,7 @@ export default function App() {
         📧 Email Reply Generator
       </Typography>
 
-      <Paper sx={{ p: 4, borderRadius: 2, backgroundColor: '#fafafa' }}>
+      <Paper sx={{ p: 4, borderRadius: 2, backgroundColor: "#fafafa" }}>
         <TextField
           fullWidth
           multiline
@@ -89,7 +107,7 @@ export default function App() {
           onClick={handleSubmit}
           disabled={!emailContent || loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Generate Reply'}
+          {loading ? <CircularProgress size={24} color="inherit" /> : "GENERATE REPLY"}
         </Button>
 
         {error && (
@@ -99,7 +117,7 @@ export default function App() {
         )}
 
         {generatedReply && (
-          <Paper sx={{ mt: 4, p: 3, borderRadius: 2, backgroundColor: '#f7f7f7' }}>
+          <Paper sx={{ mt: 4, p: 3, borderRadius: 2, backgroundColor: "#f7f7f7" }}>
             <Typography variant="h6" gutterBottom>
               Generated Reply:
             </Typography>
