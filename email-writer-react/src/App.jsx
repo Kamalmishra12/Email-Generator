@@ -29,7 +29,7 @@ export default function App() {
     setGeneratedReply('')
 
     try {
-      const response = await axios.post('https://email-generator2.onrender.com/api/email/generate', {
+      const response = await axios.post('https://email-generator-2-qs9c.onrender.com/api/email/generate', {
   emailContent,
   tone,
 })
