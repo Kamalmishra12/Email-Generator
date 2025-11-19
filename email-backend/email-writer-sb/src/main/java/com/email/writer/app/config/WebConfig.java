@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer  {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:5173",
+                    https://email-generator-2-qs9c.onrender.com,
                         "https://email-generator-murex.vercel.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
@@ -21,3 +22,4 @@ public class WebConfig implements WebMvcConfigurer  {
                 .allowCredentials(false);
     }
 }
+
