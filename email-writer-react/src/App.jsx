@@ -14,6 +14,10 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 
+// 👉 yahan base URL env se le rahe hain
+const API_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:8080'
+
 export default function App() {
   const [emailContent, setEmailContent] = useState('')
   const [tone, setTone] = useState('')
@@ -29,10 +33,14 @@ export default function App() {
     setGeneratedReply('')
 
     try {
-      const response = await axios.post(' https://email-generator2.onrender.com/api/email/generate', {
-        emailContent,
-        tone,
-      })
+    
+      const response = await axios.post(
+        `${API_URL}/api/email/generate`,
+        {
+          emailContent,
+          tone,
+        }
+      )
 
       const data = response?.data
       if (typeof data === 'string') {
@@ -73,6 +81,7 @@ export default function App() {
           <Select
             labelId="tone-label"
             value={tone}
+            label="Tone (Optional)"
             onChange={(e) => setTone(e.target.value)}
           >
             <MenuItem value="">None</MenuItem>
