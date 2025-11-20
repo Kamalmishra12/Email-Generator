@@ -28,15 +28,11 @@ export default function App() {
     setError('')
     setGeneratedReply('')
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
-try {
-  const response = await axios.post(`${API_URL}/api/email/generate`, {
-    emailContent,
-    tone,
-  });
-}
-
+    try {
+      const response = await axios.post(' https://email-generator2.onrender.com/api/email/generate', {
+        emailContent,
+        tone,
+      })
 
       const data = response?.data
       if (typeof data === 'string') {
